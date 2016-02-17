@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">UniversalLibrary</string>
+    <string name="btn_a_string">ButtonA</string>
+    <string name="btn_b_string">ButtonB</string>
+    <string name="btn_c_string">ButtonC</string>
+    <string name="null_string">"null"</string>
+	
+	
+
+</resources>
