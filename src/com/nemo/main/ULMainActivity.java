@@ -3,6 +3,9 @@ package com.nemo.main;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import android.app.Activity;
 import android.app.ActionBar;
@@ -28,13 +31,17 @@ import android.content.BroadcastReceiver;
 import android.os.Environment;
 import android.widget.Toast;
 import android.util.Log;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+//import com.android.internal.os.PowerProfile;
 
 import com.nemo.ul.R;
 
 
 public class ULMainActivity extends Activity {
     private static final String TAG = ULMainActivity.class.getSimpleName();
-
+private static String mStr;
 	private Button mButtonA;
 	private Button mButtonB;
 	private Button mButtonC;
@@ -48,7 +55,6 @@ public class ULMainActivity extends Activity {
 
 		initView();
 		initActionBar();
-
     }
 	
 	//A------------------------------------------------------------------
@@ -59,6 +65,10 @@ public class ULMainActivity extends Activity {
 		
 		builderA.append("\n--- ---\n");
         mTVResult.setText(builderA.toString());
+		
+		Intent intent = new Intent("nemo.intent.action.MAIN_JUMP_TO");
+        //intent.setClass(ULMainActivity.this, ULMainActivityJumpTo.class);
+        startActivity(intent);
 	}
 	
 	//B------------------------------------------------------------------
@@ -66,6 +76,7 @@ public class ULMainActivity extends Activity {
 		final StringBuilder builderB = new StringBuilder();
 		builderB.append("Button B result: \n").append("--- ---\n\n");
 		
+		builderB.append(testVol());
 		
 		builderB.append("\n--- ---\n");
         mTVResult.setText(builderB.toString());
@@ -76,18 +87,25 @@ public class ULMainActivity extends Activity {
 		final StringBuilder builderC = new StringBuilder();
 		builderC.append("Button C result: \n").append("--- ---\n\n");
 		
+		builderC.append("getTest(): \n");
 		
+        //getPackageInfo();
+
+        
 		builderC.append("\n--- ---\n");
         mTVResult.setText(builderC.toString());
 	}
+    
+    private String testVol() {
+    
+        //PowerProfile mPowerProfile = new PowerProfile(this);
+        //final double opVolt = mPowerProfile.getAveragePower(
+        //            PowerProfile.POWER_BLUETOOTH_CONTROLLER_OPERATING_VOLTAGE);
+        return "";
+    }
 	
-	
-	public void getTest() {
-		
-		//ClassDefineLangsss cls = new ClassDefineLangsss();
-		//int result = cls.getA();
-	}
-	
+
+
 	private void testReflect() {
 		Log.d(TAG, "1118--- getApplicationContext().getClass() = " + getApplicationContext().getClass());
 
@@ -99,6 +117,7 @@ public class ULMainActivity extends Activity {
 		
 	}
 
+   
     private void testLoggable() {
         Log.v(TAG, "v-v");
         Log.d(TAG, "d--d");
@@ -223,5 +242,167 @@ public class ULMainActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
     }
+    
+    
+	
+	
+	
+	class Base {
+		public void setData(Map<String, Object> map){
+			
+		}
+		
+		public int Func(int a, int b){
+			return a-b;
+		}
+	}
+
+	class A extends Base {
+		public void setData(LinkedHashMap<String, Object> map){
+		
+		}
+		
+		public int Func(int a, int b){
+			return a+b;
+		}
+		
+		public int Func2(int a, int b){
+			return a*b;
+		}
+	}
+    
+    class Example
+    {
+        private static String mStr = "";
+        
+        public void execute()
+        {
+            synchronized(Example.class) {
+                for (int i = 0; i < 20; ++i)
+                {
+                    try
+                    {
+                        Thread.sleep((long) Math.random() * 1000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Hello: " + i);
+                }
+            }
+        }
+
+        public static void execute2()
+        {
+            synchronized(mStr) {
+                for (int i = 0; i < 20; ++i)
+                {
+                    try
+                    {
+                        Thread.sleep((long) Math.random() * 1000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    System.out.println("World: " + i);
+                }
+            }
+        }
+
+    }
 
 }
+
+
+class ThreadTest
+    {
+        public void mainxxx(String[] args)
+        {
+            Example example = new Example();
+
+            Thread t1 = new Thread1(example);
+            Thread t2 = new Thread2(example);
+
+            t1.start();
+            t2.start();
+        }
+
+    }
+
+    class Example
+    {
+        private static String mStr = "";
+        
+        public void execute()
+        {
+            synchronized(Example.class) {
+                for (int i = 0; i < 20; ++i)
+                {
+                    try
+                    {
+                        Thread.sleep((long) Math.random() * 1000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Hello: " + i);
+                }
+            }
+        }
+
+        public static void execute2()
+        {
+            synchronized(mStr) {
+                for (int i = 0; i < 20; ++i)
+                {
+                    try
+                    {
+                        Thread.sleep((long) Math.random() * 1000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    System.out.println("World: " + i);
+                }
+            }
+        }
+
+    }
+
+    class Thread1 extends Thread
+    {
+        private Example example;
+
+        public Thread1(Example example)
+        {
+            this.example = example;
+        }
+
+        @Override
+        public void run()
+        {
+            example.execute();
+        }
+
+    }
+
+    class Thread2 extends Thread
+    {
+        private Example example;
+
+        public Thread2(Example example)
+        {
+            this.example = example;
+        }
+
+        @Override
+        public void run()
+        {
+            example.execute2();
+        }
+
+    }

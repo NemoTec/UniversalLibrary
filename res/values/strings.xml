@@ -7,6 +7,6 @@
     <string name="btn_c_string">ButtonC</string>
     <string name="null_string">"null"</string>
 	
-	
+	<string name="main_jumpto_name">ULMainActivityJumpTo</string>
 
 </resources>

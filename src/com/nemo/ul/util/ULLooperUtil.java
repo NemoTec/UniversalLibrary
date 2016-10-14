@@ -13,7 +13,7 @@ public class ULLooperUtil {
 	/**
      * @return 当前是否为主线程
      */
-    public boolean isMainUIThread() {
+    public boolean isMainThread() {
         return Looper.getMainLooper() == Looper.myLooper();
     }
 
