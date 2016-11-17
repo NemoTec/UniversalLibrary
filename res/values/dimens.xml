@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="oppo_icon_size">46dip</dimen>
+    <dimen name="icon_size">46dip</dimen>
+    <dimen name="list_margin">10dip</dimen>
+    <dimen name="app_icon_size_in_list">36dip</dimen>
+    
 
     
 	

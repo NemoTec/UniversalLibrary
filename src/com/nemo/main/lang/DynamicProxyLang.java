@@ -1,6 +1,6 @@
 
 
-package com.nemo.lang;
+package com.nemo.main.lang;
 
 
 public final class DynamicProxyLang {

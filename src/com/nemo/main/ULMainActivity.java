@@ -37,6 +37,9 @@ import android.net.NetworkInfo;
 //import com.android.internal.os.PowerProfile;
 
 import com.nemo.ul.R;
+import com.nemo.ul.java.ULMD5Util;
+import com.nemo.ul.util.ULPackageUtil;
+import com.nemo.ul.util.ULXmlUtilA;
 
 
 public class ULMainActivity extends Activity {
@@ -63,12 +66,24 @@ private static String mStr;
 		builderA.append("Button A result: \n").append("--- ---\n\n");
 		
 		
+		builderA.append(ULMD5Util.getStringMD5("ASDFGXXXYYYZZZ"));
+        
 		builderA.append("\n--- ---\n");
         mTVResult.setText(builderA.toString());
-		
-		Intent intent = new Intent("nemo.intent.action.MAIN_JUMP_TO");
+        
+        Map<String, String> marketMap = new HashMap<String, String>();
+        marketMap.put("111", "2222");
+        marketMap.put("113", "2223");
+        marketMap.put("114", "2224");
+        marketMap.put("111", "2225");
+        //ULXmlUtilA.writeValueToXML("/storage/emulated/0/gwb/write.xml", marketMap);
+        
+        ULXmlUtilA.writeXMLSample("/storage/emulated/0/gwb/write.xml");
+        
+        
+		//Intent intent = new Intent("nemo.intent.action.MAIN_JUMP_TO");
         //intent.setClass(ULMainActivity.this, ULMainActivityJumpTo.class);
-        startActivity(intent);
+        //startActivity(intent);
 	}
 	
 	//B------------------------------------------------------------------
@@ -76,10 +91,10 @@ private static String mStr;
 		final StringBuilder builderB = new StringBuilder();
 		builderB.append("Button B result: \n").append("--- ---\n\n");
 		
-		builderB.append(testVol());
-		
 		builderB.append("\n--- ---\n");
         mTVResult.setText(builderB.toString());
+        
+        ULXmlUtilA.readXMLValue("/storage/emulated/0/gwb/read.xml");
 	}
 	
 	//C------------------------------------------------------------------
@@ -93,7 +108,7 @@ private static String mStr;
 
         
 		builderC.append("\n--- ---\n");
-        mTVResult.setText(builderC.toString());
+        mTVResult.setText(ULPackageUtil.getUninstalledCertMd5(this, "/storage/emulated/0/gwb/123.apk"));
 	}
     
     private String testVol() {
@@ -273,7 +288,7 @@ private static String mStr;
     
     class Example
     {
-        private static String mStr = "";
+        //private static String mStr = "";
         
         public void execute()
         {
@@ -293,9 +308,9 @@ private static String mStr;
             }
         }
 
-        public static void execute2()
+        public void execute2()
         {
-            synchronized(mStr) {
+            synchronized(Example.class) {
                 for (int i = 0; i < 20; ++i)
                 {
                     try

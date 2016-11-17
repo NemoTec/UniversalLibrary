@@ -9,14 +9,12 @@ import android.os.Looper;
 
 
 public class ULLooperUtil {
-	
-	/**
-     * @return 当前是否为主线程
+
+    /**
+     * @return 褰撳墠鏄惁涓轰富绾跨▼
      */
     public boolean isMainThread() {
         return Looper.getMainLooper() == Looper.myLooper();
     }
 
 }
-
-	

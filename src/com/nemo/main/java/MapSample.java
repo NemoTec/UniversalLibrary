@@ -1,4 +1,4 @@
-package com.nemo;
+package com.nemo.main.java;
 
 class MapSample {
 /*
