@@ -1,0 +1,64 @@
+
+一、ListView中getChildAt(index)的使用注意事项
+http://ahua186186.iteye.com/blog/1830180
+
+1.原理 
+在很多时候ListView列表数据不需要全部刷新，只需刷新有数据变化的那一条，这时可以用getChildAt(index)获取某个指定position的view，并对该view进行刷新。 
+
+注意：在ListView中，使用getChildAt(index)的取值，只能是当前可见区域（列表可滚动）的子项！ 
+
+即取值范围在 >= ListView.getFirstVisiblePosition() &&  <= ListView.getLastVisiblePosition(); 
+1）所以如果想获取前部的将会出现返回Null值空指针问题； 
+2）getChildCount跟getCount获取的值将会不一样（数量多时）； 
+3 ）如果使用了getChildAt(index).findViewById(...)设置值的话，滚动列表时值就会改变了。 
+   需要使用getFirstVisiblePosition()获得第一个可见的位置，再用当前的position-它,再用getChildAt取值！即getChildAt(position - ListView。getFirstVisiblePosition()).findViewById(...)去设置值 
+2.如果想更新某一行数据，需要配合ListView的滚动状态使用，一般不滚动时才加载更新数据 
+
+//全局变量，用来记录ScrollView的滚动状态，1表示开始滚动，2表示正在滚动，0表示停止滚动  
+伪代码 
+ListView设置 
+public int scrollStates; 
+class OnScrollListenerImpl implements OnScrollListener{ 
+@Override 
+public void onScrollStateChanged(AbsListView view, int scrollState) { 
+scrollStates = scrollState;  
+} 
+
+@Override 
+public void onScroll(AbsListView view, int firstVisibleItem, 
+int visibleItemCount, int totalItemCount) { 
+int lastInScreen = firstVisibleItem + visibleItemCount; 
+} 
+listView.setOnScrollListener(new OnScrollListenerImpl()); 
+
+
+Activity中 
+if(scrollStates==OnScrollListener.SCROLL_STATE_IDLE){ 
+
+更新视图数据 
+} 
+
+
+二、ListView的动态刷新问题——用notifyDataSetChanged没作用
+http://blog.csdn.net/wuzhipeng1991/article/details/38820647
+
+在动态刷新ListView时，使用notifyDataSetChanged并没有起到作用。有时会被困扰得很痛苦。
+其实，在使用notifyDataSetChanged过程中，还是有细节需要注意的。举个例子：
+我的ListView使用的数据源是来自ArrayList。通常我们的做法是创建一个已经有我们想要提供给ListView的数据的ArrayList，例如：
+
+ArrayList<Integer> list  = new ArrayList<Interger>;  
+list.add(1);
+
+这里我们的list已经是指向了一个堆内存上了。接着我们想要改变list中的数据，而这个时候，就需要注意了，举个例子：我们在代码中有另外一个ArrayList叫做newlist，它是使用下面代码创建出来的：
+
+ArrayList<Integer> newlist  = new ArrayList<Interger>;  
+list.add(2);
+
+这个时候，newlist指向的是一个和list指向不同的堆内存，这个时候，我们直接用list = newlist来把newlist的数据交给list，在这里，实际上只是把list的指向改变了，让它也指向newlist指向的那个内存。那么这个时候我们再调用notifyDataSetChanged这个方法来通知listview更新数据就起不了任何作用了，原因很简单，就是list的指向已经改变，而调用notifyDataSetChanged会去检查原来list指向的数据是否变化，但是这时的list已经不是原来的list了，所以它无法判断，只能不作出响应了。那么，这个问题的解决方法是直接在原来的list上面更改数据，可以使用下面的代码来操作：
+
+list.clear();  
+list.addAll(newlist);  
+adapter.notifyDataSetChanged();
+
+这样，list的指向就不会改变，它还是指向原来那块内存，这样调用notifyDataSetChanged（）就可以起作用了。
+总结：在这里的重点就是要注意在开始时传给ListView的list指向不能被改变，需要从始至终指向同一个内存，这样调用notifyDataSetChanged后就能够检测到list的数据变化，从而触发ListView的重新绘制了！

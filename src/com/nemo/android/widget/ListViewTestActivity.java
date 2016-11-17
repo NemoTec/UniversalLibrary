@@ -33,6 +33,13 @@ import com.nemo.ul.java.ULStringUtil;
 import com.nemo.ul.util.ULIconUtils;
 import com.nemo.ul.R;
 
+/*
+http://blog.csdn.net/wuzhipeng1991/article/details/38820647
+Adapter.notifyDataSetChanged() not has effects, cause the list point to another memory.
+
+http://ahua186186.iteye.com/blog/1830180
+ListView.getChildAt(), you must put the position parameter that is visible index in the listview.
+*/
 
 public class ListViewTestActivity extends Activity {
     private static final String TAG = "ListViewTestActivity";
